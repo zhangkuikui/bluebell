@@ -208,3 +208,4 @@
 {"level":"INFO","time":"2021-04-09T14:52:25.639+0800","caller":"bluebell/main.go:101","msg":"Server exiting"}
 {"level":"INFO","time":"2021-04-09T14:56:49.403+0800","caller":"bluebell/main.go:90","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2021-04-09T14:56:49.404+0800","caller":"bluebell/main.go:101","msg":"Server exiting"}
+{"level":"ERROR","time":"2021-04-12T09:39:39.671+0800","caller":"mysql/mysql.go:29","msg":"connect DB failed","error":"dial tcp 10.200.214.182:3306: connect: operation timed out"}
