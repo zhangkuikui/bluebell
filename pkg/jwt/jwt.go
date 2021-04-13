@@ -2,11 +2,16 @@ package jwt
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/spf13/viper"
 	"time"
 )
 
+//const TokenExpireDuration = time.Hour * 2
+
 const TokenExpireDuration = time.Hour * 2
+
 var MySecret = []byte("夏天夏天悄悄过去")
 
 // MyClaims 自定义声明结构体并内嵌jwt.StandardClaims
@@ -14,20 +19,22 @@ var MySecret = []byte("夏天夏天悄悄过去")
 // 我们这里需要额外记录一个username字段，所以要自定义结构体
 // 如果想要保存更多信息，都可以添加到这个结构体中
 type MyClaims struct {
-	UserID int64 `json:"user_id"`
+	UserID   int64  `json:"user_id"`
 	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
 // GenToken 生成JWT
-func GenToken(userid int64,username string) (string, error) {
+func GenToken(userid int64, username string) (string, error) {
 	// 创建一个我们自己的声明的数据
+	fmt.Println("jwt_expire", viper.GetInt("auth.jwt_expire"))
 	c := MyClaims{
 		userid,
 		username, // 自定义字段
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(), // 过期时间
-			Issuer:    "bluebell",                               // 签发人
+			ExpiresAt: time.Now().Add(time.Hour * time.Duration(viper.GetInt("auth.jwt_expire"))).Unix(), // 过期时间
+			//ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(), // 过期时间
+			Issuer: "bluebell", // 签发人
 		},
 	}
 	// 使用指定的签名方法创建签名对象
@@ -52,8 +59,8 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 	return nil, errors.New("invalid token")*/
 
 	// 解析token
-	var mc=new(MyClaims)
-	token, err := jwt.ParseWithClaims(tokenString,mc, func(token *jwt.Token) (i interface{}, err error) {
+	var mc = new(MyClaims)
+	token, err := jwt.ParseWithClaims(tokenString, mc, func(token *jwt.Token) (i interface{}, err error) {
 		return MySecret, nil
 	})
 	if err != nil {
@@ -65,4 +72,3 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 	//return nil, errors.New("invalid token")
 	return nil, errors.New("invalid token")
 }
-

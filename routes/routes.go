@@ -14,24 +14,26 @@ func Setup() *gin.Engine {
 	//加载日志中间件
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
-	UserInit(r)
-
-
-
+	v1:=r.Group("/api/v1")
 	// 注册
-	r.POST("/signup", controllers.SignUpHandler)
+	v1.POST("/signup", controllers.SignUpHandler)
 	// 登录
-	//r.POST("/login", controllers.LoginHandler)
+	v1.POST("/login", controllers.LoginHandler)
 
+	//可以拆分出去
+	//UserInit(r,v1)
 
+	v1.Use(middlewares.JWTAuthMiddleware()) //应用JWT认证中间件
 
+	{
+		v1.GET("/community",controllers.CommunityHandler) //
+	}
 
-
-	r.GET("/ping",middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
-
-		controllers.ResopnseSuccess(c,"pong")
-
-	})
+	//r.GET("/ping", func(c *gin.Context) {
+	//
+	//	controllers.ResopnseSuccess(c,"pong")
+	//
+	//})
 
 
 	r.NoRoute(func(c *gin.Context) {

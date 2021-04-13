@@ -5,10 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserInit(r *gin.Engine)  {
-	v1 := r.Group("")
+func UserInit(r *gin.Engine,group *gin.RouterGroup)  {
 	{
-		v1.POST("/login", controllers.LoginHandler)
-
+		group.POST("/login", controllers.LoginHandler)
+		group.POST("/login", controllers.LoginHandler)
 	}
 }
