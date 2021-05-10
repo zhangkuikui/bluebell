@@ -17,6 +17,8 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // Go Web开发较通用的脚手架模版
@@ -61,6 +63,9 @@ func main() {
 	// 5. 注册路由
 	r := routes.Setup()
 	fmt.Printf("Listening and serving HTTP on :%d \n", viper.GetInt("app.port"))
+
+	// Swagger
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 6. 启动服务（优雅关机）
 	srv := &http.Server{

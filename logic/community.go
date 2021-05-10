@@ -22,3 +22,8 @@ func GetCommunityList()(data []*models.Community,err error)  {
 	return data,err
 
 }
+
+func GetCommunityDetail(id int64)(*models.CommunityDetail, error)  {
+
+	return mysql.GetCommunityDetailByID(id)
+}

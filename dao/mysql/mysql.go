@@ -15,7 +15,8 @@ var db *sqlx.DB
 
 func Init() (err error) {
 	//dsn := "op:123456@tcp(10.200.214.182:3306)/sql_test?charset=utf8mb4&parseTime=True"
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True",
+	// 数据库中存时间戳需要加parseTime=True&loc=Local
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		viper.GetString("mysql.user"),
 		viper.GetString("mysql.password"),
 		viper.GetString("mysql.host"),
